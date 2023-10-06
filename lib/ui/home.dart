@@ -18,7 +18,11 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
         backgroundColor: Colors.deepOrangeAccent,
       ),
-      body: CellGrid(),
+      body: const Column(
+        children: [
+          Expanded(child: CellGrid()),
+        ],
+      ),
     );
   }
 }
