@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:game_of_life/classes/enum_life.dart';
 import 'package:game_of_life/interfaces/cell_state.dart';
 
 class DeadCellState implements CellState {
   @override
-  bool isCellAlive() {
-    return false;
+  Life isCellAlive() {
+    return Life.dead;
   }
 
   @override

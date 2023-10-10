@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:game_of_life/classes/enum_life.dart';
 
 abstract class CellState {
-  bool isCellAlive();
+  Life isCellAlive();
   Color getColor();
 }

@@ -1,0 +1,4 @@
+enum Life {
+  alive,
+  dead
+}
