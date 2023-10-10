@@ -1,12 +1,15 @@
 import 'package:game_of_life/classes/cell.dart';
+import 'package:game_of_life/classes/cell_types/grid_border.dart';
+import 'package:game_of_life/classes/cell_types/grid_corner.dart';
+import 'package:game_of_life/classes/cell_types/grid_inside.dart';
 
 class Grid {
   static final Grid _instance = Grid._();
 
   Grid._();
 
-  int _width = 10;
-  int _size = 100;
+  int _width = 14;
+  int _size = 98;
   final List<Cell> _cellList = [];
 
   static Grid getInstance() {
@@ -21,7 +24,7 @@ class Grid {
     return _size;
   }
 
-  getCells() {
+  List<Cell> getCells() {
     return _cellList;
   }
 
@@ -35,7 +38,21 @@ class Grid {
 
   initCellList() {
     for (var i = 0; i < Grid.getInstance().getSize(); i++) {
-      _cellList.add(Cell());
+      int size = Grid.getInstance().getSize();
+      int width = Grid.getInstance().getWidth();
+      if (i == 0 ||
+          i == (size - 1) ||
+          i == (width - 1) ||
+          i == (size - width)) {
+        _cellList.add(Cell(GridCorner()));
+      } else if (i < (width - 1) ||
+          i > (size - width) ||
+          (i % width) == 0 ||
+          (i % width) == (width - 1)) {
+        _cellList.add(Cell(GridBorder()));
+      } else {
+        _cellList.add(Cell(GridInside()));
+      }
     }
   }
 }

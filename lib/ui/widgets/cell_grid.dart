@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:game_of_life/classes/cell_types/grid_border.dart';
+import 'package:game_of_life/classes/cell_types/grid_corner.dart';
+import 'package:game_of_life/classes/cell_types/grid_inside.dart';
 import 'package:game_of_life/classes/grid.dart';
 
 class CellGrid extends StatefulWidget {
@@ -29,12 +32,20 @@ class _CellGridState extends State<CellGrid> {
             child: GridTile(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Grid.getInstance().getCells()[index].cellState.getColor(),
+                  color:
+                      Grid.getInstance().getCells()[index].cellState.getColor(),
                   border: Border.all(
                     color: Colors.black,
                     width: 2.0,
                   ),
                 ),
+                child: Text(
+                    Grid.getInstance().getCells()[index].cellType is GridCorner
+                        ? "Corner"
+                        : Grid.getInstance().getCells()[index].cellType
+                                is GridBorder
+                            ? "Border"
+                            : "Inside"),
               ),
             ),
           ),
