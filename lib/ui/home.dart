@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_of_life/classes/grid.dart';
 import 'package:game_of_life/ui/widgets/cell_grid.dart';
 
 class Home extends StatefulWidget {
@@ -18,11 +19,7 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
         backgroundColor: Colors.deepOrangeAccent,
       ),
-      body: const Column(
-        children: [
-          Expanded(child: CellGrid()),
-        ],
-      ),
+      body: const CellGrid(),
     );
   }
 }

@@ -3,15 +3,14 @@ import 'package:game_of_life/classes/cell_types/grid_border.dart';
 import 'package:game_of_life/classes/cell_types/grid_corner.dart';
 import 'package:game_of_life/classes/cell_types/grid_inside.dart';
 import 'package:game_of_life/classes/enum_life.dart';
-import 'package:game_of_life/interfaces/cell_state.dart';
 
 class Grid {
   static final Grid _instance = Grid._();
 
   Grid._();
 
-  int _width = 14;
-  int _size = 98;
+  int _width = 17;
+  int _size = 289;
   int _currentTurn = 0;
   final List<Cell> _cellList = [];
 
