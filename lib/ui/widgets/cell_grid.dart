@@ -39,13 +39,6 @@ class _CellGridState extends State<CellGrid> {
                     width: 2.0,
                   ),
                 ),
-                child: Text(
-                    Grid.getInstance().getCells()[index].cellType is GridCorner
-                        ? "Corner"
-                        : Grid.getInstance().getCells()[index].cellType
-                                is GridBorder
-                            ? "Border"
-                            : "Inside"),
               ),
             ),
           ),
