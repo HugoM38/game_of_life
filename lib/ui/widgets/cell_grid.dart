@@ -31,7 +31,7 @@ class _CellGridState extends State<CellGrid> {
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
