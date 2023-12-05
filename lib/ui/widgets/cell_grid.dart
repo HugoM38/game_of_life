@@ -101,8 +101,8 @@ class _CellGridState extends State<CellGrid> {
                                   const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Aléatoire",
-                            style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 1)),
+                            style:
+                                TextStyle(color: Color.fromRGBO(6, 39, 38, 1)),
                           )),
                       const SizedBox(width: 10),
                       ElevatedButton(
@@ -116,43 +116,45 @@ class _CellGridState extends State<CellGrid> {
                                   const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Prochain tour",
-                            style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 1)),
+                            style:
+                                TextStyle(color: Color.fromRGBO(6, 39, 38, 1)),
                           )),
                       const SizedBox(width: 10),
                       ElevatedButton(
                           onPressed: () async {
-                            Grid.getInstance().startAutoMode();
+                            if (Grid.getInstance().isGameAutoStarted()) {
+                              Grid.getInstance().stopAutoMode();
+                            } else {
+                              Grid.getInstance().startAutoMode();
+                              while (Grid.getInstance().isGameAutoStarted()) {
+                                switch (typeOfSpeed) {
+                                  case "milliseconds":
+                                    await Future.delayed(
+                                        Duration(milliseconds: autoSpeed));
+                                    break;
+                                  case "microseconds":
+                                    await Future.delayed(
+                                        Duration(microseconds: autoSpeed));
+                                    break;
+                                  default:
+                                    await Future.delayed(
+                                        Duration(milliseconds: autoSpeed));
+                                    break;
+                                }
 
-                            while (Grid.getInstance().isGameAutoStarted()) {
-                              switch (typeOfSpeed) {
-                                case "milliseconds":
-                                  await Future.delayed(
-                                      Duration(milliseconds: autoSpeed));
-                                  break;
-                                case "microseconds":
-                                  await Future.delayed(
-                                      Duration(microseconds: autoSpeed));
-                                  break;
-                                default:
-                                  await Future.delayed(
-                                      Duration(milliseconds: autoSpeed));
-                                  break;
+                                setState(() {
+                                  Grid.getInstance().nextTurn();
+                                });
                               }
-
-                              setState(() {
-                                Grid.getInstance().nextTurn();
-                              });
                             }
-                            // Grid.getInstance().startAutoMode(context);
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
                                   const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Mode automatique",
-                            style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 1)),
+                            style:
+                                TextStyle(color: Color.fromRGBO(6, 39, 38, 1)),
                           )),
                       const SizedBox(width: 10),
                       ElevatedButton(
@@ -166,8 +168,8 @@ class _CellGridState extends State<CellGrid> {
                                   const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Réinitialiser",
-                            style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 1)),
+                            style:
+                                TextStyle(color: Color.fromRGBO(6, 39, 38, 1)),
                           ))
                     ],
                   ),
@@ -245,8 +247,7 @@ class _CellGridState extends State<CellGrid> {
                               value: "microseconds",
                               child: Text("microseconds",
                                   style: TextStyle(
-                                      color:
-                                          Color.fromRGBO(244, 211, 94, 1))),
+                                      color: Color.fromRGBO(244, 211, 94, 1))),
                             ),
                           ],
                         ),
