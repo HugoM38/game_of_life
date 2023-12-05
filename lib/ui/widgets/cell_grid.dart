@@ -9,6 +9,9 @@ class CellGrid extends StatefulWidget {
 }
 
 class _CellGridState extends State<CellGrid> {
+  double sliderVal = 1.0;
+  int autoSpeed = 1000;
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -77,61 +80,129 @@ class _CellGridState extends State<CellGrid> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Grid.getInstance().randomizeGrid();
-                    });
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(244, 211, 94, 100))),
-                  child: const Text(
-                    "Aléatoire",
-                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
-                  )),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Grid.getInstance().nextTurn();
-                    });
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(244, 211, 94, 100))),
-                  child: const Text(
-                    "Prochain tour",
-                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
-                  )),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Grid.getInstance().startAutoMode(context);
-                    });
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(244, 211, 94, 100))),
-                  child: const Text(
-                    "Mode automatique",
-                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
-                  )),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Grid.getInstance().reset();
-                    });
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(244, 211, 94, 100))),
-                  child: const Text(
-                    "Réinitialiser",
-                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
-                  ))
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              Grid.getInstance().randomizeGrid();
+                            });
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromRGBO(244, 211, 94, 100))),
+                          child: const Text(
+                            "Aléatoire",
+                            style: TextStyle(
+                                color: Color.fromRGBO(6, 39, 38, 100)),
+                          )),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              Grid.getInstance().nextTurn();
+                            });
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromRGBO(244, 211, 94, 100))),
+                          child: const Text(
+                            "Prochain tour",
+                            style: TextStyle(
+                                color: Color.fromRGBO(6, 39, 38, 100)),
+                          )),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                          onPressed: () async {
+                            Grid.getInstance().startAutoMode();
+
+                            while (Grid.getInstance().isGameAutoStarted()) {
+                              await Future.delayed(
+                                  Duration(milliseconds: autoSpeed));
+                              setState(() {
+                                Grid.getInstance().nextTurn();
+                              });
+                            }
+                            // Grid.getInstance().startAutoMode(context);
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromRGBO(244, 211, 94, 100))),
+                          child: const Text(
+                            "Mode automatique",
+                            style: TextStyle(
+                                color: Color.fromRGBO(6, 39, 38, 100)),
+                          )),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              Grid.getInstance().reset();
+                            });
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromRGBO(244, 211, 94, 100))),
+                          child: const Text(
+                            "Réinitialiser",
+                            style: TextStyle(
+                                color: Color.fromRGBO(6, 39, 38, 100)),
+                          ))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        "Vitesse du mode auto",
+                        style: TextStyle(
+                            color: Color.fromRGBO(244, 211, 94, 100),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: sliderVal,
+                        min: 1.0,
+                        max: 5.0,
+                        divisions: 4,
+                        onChanged: (value) {
+                          setState(() {
+                            sliderVal = value;
+                            switch (value) {
+                              case 1.0:
+                                autoSpeed = 1000;
+                                break;
+                              case 2.0:
+                                autoSpeed = 750;
+                                break;
+                              case 3.0:
+                                autoSpeed = 500;
+                                break;
+                              case 4.0:
+                                autoSpeed = 250;
+                                break;
+                              case 5.0:
+                                autoSpeed = 100;
+                                break;
+                              default:
+                                autoSpeed = 1000;
+                                break;
+                            }
+                          });
+                        },
+                      ),
+                      Text(
+                        autoSpeed.toString(),
+                        style: const TextStyle(
+                            color: Color.fromRGBO(244, 211, 94, 100),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           )
         ],

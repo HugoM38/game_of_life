@@ -44,6 +44,10 @@ class Grid {
     return _autoModeStarted;
   }
 
+  startAutoMode() {
+    _autoModeStarted = true;
+  }
+
   List<Cell> getCells() {
     return _cellList;
   }
@@ -103,12 +107,12 @@ class Grid {
     }
   }
 
-  startAutoMode(BuildContext context) {
-    _autoModeStarted = true;
-    while (_autoModeStarted) {
-      Future.delayed(const Duration(milliseconds: 200)).then((value) => {nextTurn()});
-    }
-  }
+  // startAutoMode(BuildContext context) {
+  //   _autoModeStarted = true;
+  //   while (_autoModeStarted) {
+  //     Future.delayed(const Duration(milliseconds: 200)).then((value) => {nextTurn()});
+  //   }
+  // }
 
   initCellList() {
     for (var i = 0; i < Grid.getInstance().getSize(); i++) {
