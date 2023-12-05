@@ -20,7 +20,17 @@ class _CellGridState extends State<CellGrid> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(15.0),
+            child: Text(
+              Grid.getInstance().getCurrentTurn().toString(),
+              style: const TextStyle(
+                  color: Color.fromRGBO(244, 211, 94, 100),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 30.0),
             child: SizedBox(
               height: gridSize,
               width: gridSize,
@@ -35,7 +45,11 @@ class _CellGridState extends State<CellGrid> {
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          Grid.getInstance().getCells()[index].changeCellState();
+                          !Grid.getInstance().isGameStarted()
+                              ? Grid.getInstance()
+                                  .getCells()[index]
+                                  .changeCellState()
+                              : null;
                         });
                       },
                       child: GridTile(
@@ -46,7 +60,7 @@ class _CellGridState extends State<CellGrid> {
                                 .cellState
                                 .getColor(),
                             border: Border.all(
-                              color: Colors.black,
+                              color: const Color.fromRGBO(244, 211, 94, 100),
                               width: 2.0,
                             ),
                           ),
@@ -59,13 +73,67 @@ class _CellGridState extends State<CellGrid> {
               ),
             ),
           ),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  Grid.getInstance().nextTurn();
-                });
-              },
-              child: const Text("Prochain tour"))
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Grid.getInstance().randomizeGrid();
+                    });
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(244, 211, 94, 100))),
+                  child: const Text(
+                    "Aléatoire",
+                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
+                  )),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Grid.getInstance().nextTurn();
+                    });
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(244, 211, 94, 100))),
+                  child: const Text(
+                    "Prochain tour",
+                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
+                  )),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Grid.getInstance().startAutoMode(context);
+                    });
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(244, 211, 94, 100))),
+                  child: const Text(
+                    "Mode automatique",
+                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
+                  )),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Grid.getInstance().reset();
+                    });
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(244, 211, 94, 100))),
+                  child: const Text(
+                    "Réinitialiser",
+                    style: TextStyle(color: Color.fromRGBO(6, 39, 38, 100)),
+                  ))
+            ],
+          )
         ],
       ),
     );
