@@ -10,6 +10,7 @@ class CellGrid extends StatefulWidget {
 
 class _CellGridState extends State<CellGrid> {
   double sliderVal = 1.0;
+  double sizeSliderVal = 3.0;
   int autoSpeed = 1000;
   String typeOfSpeed = "milliseconds";
 
@@ -38,49 +39,105 @@ class _CellGridState extends State<CellGrid> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 30.0),
-            child: SizedBox(
-              height: gridSize,
-              width: gridSize,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: Grid.getInstance().getWidth(),
-                  childAspectRatio: 1.0,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          !Grid.getInstance().isGameStarted()
-                              ? Grid.getInstance()
-                                  .getCells()[index]
-                                  .changeCellState()
-                              : null;
-                        });
-                      },
-                      child: GridTile(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Grid.getInstance()
-                                .getCells()[index]
-                                .cellState
-                                .getColor(),
-                            border: Border.all(
-                              color: const Color.fromRGBO(244, 211, 94, 1),
-                              width: 2.0,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: 8.0,
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                      overlayShape:
+                          const RoundSliderOverlayShape(overlayRadius: 20.0),
+                    ),
+                    child: RotatedBox(
+                      quarterTurns:
+                          3, // Pour faire pivoter le slider de 270 degrés (du bas vers le haut)
+                      child: Slider(
+                        value: sizeSliderVal,
+                        onChanged: (value) {
+                          setState(() {
+                            sizeSliderVal = value;
+                            switch (value) {
+                              case 1.0:
+                                Grid.getInstance().setSize(81);
+                                Grid.getInstance().setWidth(9);
+                                Grid.getInstance().initCellList();
+                                break;
+                              case 2.0:
+                                Grid.getInstance().setSize(169);
+                                Grid.getInstance().setWidth(13);
+                                Grid.getInstance().initCellList();
+                                break;
+                              case 3.0:
+                                Grid.getInstance().setSize(289);
+                                Grid.getInstance().setWidth(17);
+                                Grid.getInstance().initCellList();
+                                break;
+                              default:
+                                Grid.getInstance().setSize(289);
+                                Grid.getInstance().setWidth(17);
+                                Grid.getInstance().initCellList();
+                                break;
+                            }
+                          });
+                        },
+                        min: 1.0,
+                        max: 3.0,
+                        divisions: 2,
+                      ),
+                    ),
+                  ),
+                  displaySize(),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 30.0),
+                child: SizedBox(
+                  height: gridSize,
+                  width: gridSize,
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: Grid.getInstance().getWidth(),
+                      childAspectRatio: 1.0,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              !Grid.getInstance().isGameStarted()
+                                  ? Grid.getInstance()
+                                      .getCells()[index]
+                                      .changeCellState()
+                                  : null;
+                            });
+                          },
+                          child: GridTile(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Grid.getInstance()
+                                    .getCells()[index]
+                                    .cellState
+                                    .getColor(),
+                                border: Border.all(
+                                  color: const Color.fromRGBO(244, 211, 94, 1),
+                                  width: 2.0,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-                itemCount: Grid.getInstance().getSize(),
+                      );
+                    },
+                    itemCount: Grid.getInstance().getSize(),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -261,5 +318,42 @@ class _CellGridState extends State<CellGrid> {
         ],
       ),
     );
+  }
+
+  Text displaySize() {
+    switch (sizeSliderVal) {
+      case 1.0:
+        return const Text(
+          "9x9",
+          style: TextStyle(
+              color: Color.fromRGBO(244, 211, 94, 1),
+              fontSize: 16,
+              fontWeight: FontWeight.bold),
+        );
+      case 2.0:
+        return const Text(
+          "13x13",
+          style: TextStyle(
+              color: Color.fromRGBO(244, 211, 94, 1),
+              fontSize: 16,
+              fontWeight: FontWeight.bold),
+        );
+      case 3.0:
+        return const Text(
+          "17x17",
+          style: TextStyle(
+              color: Color.fromRGBO(244, 211, 94, 1),
+              fontSize: 16,
+              fontWeight: FontWeight.bold),
+        );
+      default:
+        return const Text(
+          "17x17",
+          style: TextStyle(
+              color: Color.fromRGBO(244, 211, 94, 1),
+              fontSize: 16,
+              fontWeight: FontWeight.bold),
+        );
+    }
   }
 }

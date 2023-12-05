@@ -125,6 +125,7 @@ class Grid {
   }
 
   initCellList() {
+    _cellList.clear();
     for (var i = 0; i < Grid.getInstance().getSize(); i++) {
       int size = Grid.getInstance().getSize();
       int width = Grid.getInstance().getWidth();
