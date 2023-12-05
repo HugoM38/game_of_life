@@ -10,6 +10,6 @@ class AliveCellState implements CellState {
 
   @override
   Color getColor() {
-    return const Color.fromRGBO(144, 252, 249, 100);
+    return const Color.fromRGBO(144, 252, 249, 1);
   }
 }

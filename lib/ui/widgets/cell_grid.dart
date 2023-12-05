@@ -11,6 +11,7 @@ class CellGrid extends StatefulWidget {
 class _CellGridState extends State<CellGrid> {
   double sliderVal = 1.0;
   int autoSpeed = 1000;
+  String typeOfSpeed = "milliseconds";
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _CellGridState extends State<CellGrid> {
             child: Text(
               Grid.getInstance().getCurrentTurn().toString(),
               style: const TextStyle(
-                  color: Color.fromRGBO(244, 211, 94, 100),
+                  color: Color.fromRGBO(244, 211, 94, 1),
                   fontSize: 30,
                   fontWeight: FontWeight.bold),
             ),
@@ -68,7 +69,7 @@ class _CellGridState extends State<CellGrid> {
                                 .cellState
                                 .getColor(),
                             border: Border.all(
-                              color: const Color.fromRGBO(244, 211, 94, 100),
+                              color: const Color.fromRGBO(244, 211, 94, 1),
                               width: 2.0,
                             ),
                           ),
@@ -97,11 +98,11 @@ class _CellGridState extends State<CellGrid> {
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromRGBO(244, 211, 94, 100))),
+                                  const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Aléatoire",
                             style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 100)),
+                                color: Color.fromRGBO(6, 39, 38, 1)),
                           )),
                       const SizedBox(width: 10),
                       ElevatedButton(
@@ -112,11 +113,11 @@ class _CellGridState extends State<CellGrid> {
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromRGBO(244, 211, 94, 100))),
+                                  const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Prochain tour",
                             style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 100)),
+                                color: Color.fromRGBO(6, 39, 38, 1)),
                           )),
                       const SizedBox(width: 10),
                       ElevatedButton(
@@ -124,8 +125,21 @@ class _CellGridState extends State<CellGrid> {
                             Grid.getInstance().startAutoMode();
 
                             while (Grid.getInstance().isGameAutoStarted()) {
-                              await Future.delayed(
-                                  Duration(milliseconds: autoSpeed));
+                              switch (typeOfSpeed) {
+                                case "milliseconds":
+                                  await Future.delayed(
+                                      Duration(milliseconds: autoSpeed));
+                                  break;
+                                case "microseconds":
+                                  await Future.delayed(
+                                      Duration(microseconds: autoSpeed));
+                                  break;
+                                default:
+                                  await Future.delayed(
+                                      Duration(milliseconds: autoSpeed));
+                                  break;
+                              }
+
                               setState(() {
                                 Grid.getInstance().nextTurn();
                               });
@@ -134,11 +148,11 @@ class _CellGridState extends State<CellGrid> {
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromRGBO(244, 211, 94, 100))),
+                                  const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Mode automatique",
                             style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 100)),
+                                color: Color.fromRGBO(6, 39, 38, 1)),
                           )),
                       const SizedBox(width: 10),
                       ElevatedButton(
@@ -149,11 +163,11 @@ class _CellGridState extends State<CellGrid> {
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromRGBO(244, 211, 94, 100))),
+                                  const Color.fromRGBO(244, 211, 94, 1))),
                           child: const Text(
                             "Réinitialiser",
                             style: TextStyle(
-                                color: Color.fromRGBO(6, 39, 38, 100)),
+                                color: Color.fromRGBO(6, 39, 38, 1)),
                           ))
                     ],
                   ),
@@ -162,15 +176,15 @@ class _CellGridState extends State<CellGrid> {
                       const Text(
                         "Vitesse du mode auto",
                         style: TextStyle(
-                            color: Color.fromRGBO(244, 211, 94, 100),
+                            color: Color.fromRGBO(244, 211, 94, 1),
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
                       Slider(
                         value: sliderVal,
                         min: 1.0,
-                        max: 5.0,
-                        divisions: 4,
+                        max: 6.0,
+                        divisions: 5,
                         onChanged: (value) {
                           setState(() {
                             sliderVal = value;
@@ -179,17 +193,19 @@ class _CellGridState extends State<CellGrid> {
                                 autoSpeed = 1000;
                                 break;
                               case 2.0:
-                                autoSpeed = 750;
-                                break;
-                              case 3.0:
                                 autoSpeed = 500;
                                 break;
-                              case 4.0:
-                                autoSpeed = 250;
+                              case 3.0:
+                                autoSpeed = 200;
                                 break;
-                              case 5.0:
+                              case 4.0:
                                 autoSpeed = 100;
                                 break;
+                              case 5.0:
+                                autoSpeed = 10;
+                                break;
+                              case 6.0:
+                                autoSpeed = 1;
                               default:
                                 autoSpeed = 1000;
                                 break;
@@ -198,12 +214,43 @@ class _CellGridState extends State<CellGrid> {
                         },
                       ),
                       Text(
-                        "${autoSpeed.toString()} ms",
+                        typeOfSpeed == "milliseconds"
+                            ? "${autoSpeed.toString()} ms"
+                            : "${autoSpeed.toString()} μs",
                         style: const TextStyle(
-                            color: Color.fromRGBO(244, 211, 94, 100),
+                            color: Color.fromRGBO(244, 211, 94, 1),
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: DropdownButton<String>(
+                          value: typeOfSpeed,
+                          onChanged: (value) {
+                            setState(() {
+                              typeOfSpeed = value!;
+                            });
+                          },
+                          dropdownColor: const Color.fromRGBO(6, 39, 38, 1),
+                          items: const <DropdownMenuItem<String>>[
+                            DropdownMenuItem(
+                              value: "milliseconds",
+                              child: Text(
+                                "milliseconds",
+                                style: TextStyle(
+                                    color: Color.fromRGBO(244, 211, 94, 1)),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: "microseconds",
+                              child: Text("microseconds",
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromRGBO(244, 211, 94, 1))),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ],

@@ -10,6 +10,6 @@ class DeadCellState implements CellState {
 
   @override
   Color getColor() {
-    return const Color.fromRGBO(6, 39, 38, 100);
+    return const Color.fromRGBO(6, 39, 38, 1);
   }
 }
