@@ -13,12 +13,17 @@ class _CellGridState extends State<CellGrid> {
   int autoSpeed = 1000;
 
   @override
+  void initState() {
+    super.initState();
+    Grid.getInstance().initCellList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double gridSize =
         0.75 * (screenWidth < screenHeight ? screenWidth : screenHeight);
-    Grid.getInstance().initCellList();
     return Center(
       child: Column(
         children: [

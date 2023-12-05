@@ -18,6 +18,7 @@ class Grid {
   bool _gameStarted = false;
   bool _autoModeStarted = false;
   final List<Cell> _cellList = [];
+  final List<Cell> _oldCellList = [];
 
   static Grid getInstance() {
     return _instance;
@@ -64,7 +65,16 @@ class Grid {
       _gameStarted = true;
     }
     var changedState = false;
+    _oldCellList.clear();
+
     for (var cell in _cellList) {
+      Cell newCell = Cell(cell.cellType, cell.index);
+      newCell.cellState = cell.cellState;
+      _oldCellList.add(newCell);
+    }
+
+    for (var cell in _cellList) {
+      int currentIndex = _cellList.indexOf(cell);
       Life cellState = cell.cellState.isCellAlive();
       Map<int, Life> neighborsState = cell.neighborsStateCommand.execute();
       int aliveNeighbors = 0;
@@ -77,17 +87,21 @@ class Grid {
 
       if (cellState == Life.alive &&
           (aliveNeighbors < 2 || aliveNeighbors > 3)) {
-        changedState = true;
         cell.changeCellState();
       } else if (cellState == Life.dead && aliveNeighbors == 3) {
-        changedState = true;
         cell.changeCellState();
+      }
+
+      if (_oldCellList[currentIndex].cellState.isCellAlive() !=
+          cell.cellState.isCellAlive()) {
+        changedState = true;
       }
     }
     if (changedState) {
       _currentTurn++;
     } else {
       _autoModeStarted = false;
+      _gameStarted = false;
     }
   }
 
