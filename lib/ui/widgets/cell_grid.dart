@@ -193,7 +193,7 @@ class _CellGridState extends State<CellGrid> {
                         },
                       ),
                       Text(
-                        autoSpeed.toString(),
+                        "${autoSpeed.toString()} ms",
                         style: const TextStyle(
                             color: Color.fromRGBO(244, 211, 94, 100),
                             fontSize: 16,

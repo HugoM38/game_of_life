@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:game_of_life/classes/cell.dart';
 import 'package:game_of_life/classes/cell_types/grid_border.dart';
 import 'package:game_of_life/classes/cell_types/grid_corner.dart';
